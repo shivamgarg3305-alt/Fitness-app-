@@ -24,7 +24,7 @@ class KittySleepApp extends StatelessWidget {
       theme: ThemeData.dark(useMaterial3: true).copyWith(
         scaffoldBackgroundColor: AppColors.navyDeep,
       ),
-      home: const AppShell(),
+      home:  AppShell(),
     );
   }
 }
