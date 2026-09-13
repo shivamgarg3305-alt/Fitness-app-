@@ -1,66 +1,58 @@
-<!--
-  Add these inside <manifest> (permissions, queries) and inside
-  <application> (service) of android/app/src/main/AndroidManifest.xml.
-  This is a SNIPPET to merge in -- not a full replacement file.
--->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-<!-- ============ Health Connect read/write permissions ============ -->
-<!-- One per HealthDataType actually used in health_service.dart. -->
-<uses-permission android:name="android.permission.health.READ_STEPS" />
-<uses-permission android:name="android.permission.health.READ_HEART_RATE" />
-<uses-permission android:name="android.permission.health.READ_HEART_RATE_VARIABILITY" />
-<uses-permission android:name="android.permission.health.READ_RESTING_HEART_RATE" />
-<uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION" />
-<uses-permission android:name="android.permission.health.READ_RESPIRATORY_RATE" />
-<uses-permission android:name="android.permission.health.READ_VO2_MAX" />
-<uses-permission android:name="android.permission.health.READ_SLEEP" />
-<!-- Write is required because HealthService.syncManualSessionToHealth
-     writes manually-tracked sessions back as SLEEP_ASLEEP. Omit if you
-     remove that write path. -->
-<uses-permission android:name="android.permission.health.WRITE_SLEEP" />
+    <!-- Health Connect Permissions -->
+    <uses-permission android:name="android.permission.health.READ_STEPS" />
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE_VARIABILITY" />
+    <uses-permission android:name="android.permission.health.READ_RESTING_HEART_RATE" />
+    <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION" />
+    <uses-permission android:name="android.permission.health.READ_RESPIRATORY_RATE" />
+    <uses-permission android:name="android.permission.health.READ_VO2_MAX" />
+    <uses-permission android:name="android.permission.health.READ_SLEEP" />
+    <uses-permission android:name="android.permission.health.WRITE_SLEEP" />
 
-<!-- Android 11+ (API 30+) package-visibility rule: your app can't see
-     whether Health Connect is installed without this <queries> entry.
-     HealthService.checkHealthConnectAvailability() depends on it. -->
-<queries>
-    <package android:name="com.google.android.apps.healthdata" />
-</queries>
+    <!-- Audio & Foreground Service Permissions -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-<!-- ============ Microphone ============ -->
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Health Connect App Visibility -->
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
 
-<!-- ============ Foreground service (SoundDetectionService / ForegroundServiceController) ============ -->
-<!-- FOREGROUND_SERVICE: baseline permission for running any foreground
-     service (API 28+).
-     FOREGROUND_SERVICE_MICROPHONE: Android 14 (API 34+) requires the
-     service to declare this specific type, or the OS throws a
-     SecurityException at runtime when the service starts.
-     POST_NOTIFICATIONS: Android 13 (API 33+) requires runtime consent
-     to show the persistent tracking notification the foreground service
-     depends on -- ForegroundServiceController.requestPermissions()
-     requests this at the start of a sleep session. -->
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
+    <application
+        android:label="Fitness App"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
 
-<!--
-  ============ Foreground service declaration ============
-  flutter_foreground_task's own AAR typically merges its service
-  declaration into your manifest automatically via manifest merger --
-  for most pinned versions you will NOT need to add a <service> block
-  yourself. The shape below is shown so you can verify what actually
-  gets merged (inspect the final merged manifest at
-  build/app/intermediates/merged_manifest/... after a build) rather than
-  guess. Only add this manually if your specific plugin version's own
-  documentation says explicit declaration is required, and use the exact
-  class name that version ships -- "com.pravera.flutter_foreground_task
-  .service.ForegroundService" below is the class name as of commonly-used
-  8.x releases, not something guaranteed for whatever you land on:
--->
-<!--
-<service
-    android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
-    android:foregroundServiceType="microphone"
-    android:exported="false" />
--->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Flutter v2 Embedding Requirement -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
+        <!-- Foreground Audio Service -->
+        <service
+            android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
+            android:foregroundServiceType="microphone"
+            android:exported="false" />
+
+    </application>
+</manifest>
