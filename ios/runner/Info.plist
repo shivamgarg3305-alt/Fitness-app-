@@ -1,0 +1,70 @@
+<!--
+  Add these keys inside the <dict> of ios/Runner/Info.plist.
+  This is a SNIPPET to merge in -- not a full replacement file.
+-->
+
+<!-- ============ HealthKit ============ -->
+<key>NSHealthShareUsageDescription</key>
+<string>Kitty Sleep reads your sleep, heart rate, HRV, SpO2, and activity data from Health to power your sleep and recovery insights.</string>
+
+<!-- Required because HealthService.syncManualSessionToHealth writes a
+     manually-tracked sleep session back into HealthKit. Omit this key
+     only if you remove that write path entirely. -->
+<key>NSHealthUpdateUsageDescription</key>
+<string>Kitty Sleep can save sleep sessions you track manually back to Health.</string>
+
+<!-- ============ Microphone ============ -->
+<!-- Required by SoundDetectionService (record package) for on-device
+     snore/talking/ambient-noise detection during a sleep session. -->
+<key>NSMicrophoneUsageDescription</key>
+<string>Kitty Sleep listens for snoring and sleep talking during tracking, entirely on your device. Audio is never recorded to a file or sent anywhere -- only the detected event type and time are saved.</string>
+
+<!-- ============ Background Modes ============ -->
+<key>UIBackgroundModes</key>
+<array>
+    <!-- Required: lets audio capture continue past screen-lock. This is
+         the mechanism that ACTUALLY keeps sound detection alive on iOS --
+         not flutter_foreground_task, which has no iOS foreground-service
+         equivalent. What justifies continued execution to iOS is that
+         `record` has an active, running AVAudioSession. -->
+    <string>audio</string>
+
+    <!-- Optional, NOT required by anything currently built. Only add
+         "fetch" if you later implement periodic background refresh via
+         BGTaskScheduler (see BGTaskSchedulerPermittedIdentifiers below).
+         Leaving it out costs nothing right now. -->
+    <!-- <string>fetch</string> -->
+</array>
+
+<!-- ============ BGTaskSchedulerPermittedIdentifiers ============ -->
+<!--
+  NOT REQUIRED by anything in this codebase today. This key only matters
+  if you register a BGAppRefreshTask/BGProcessingTask (via
+  BGTaskScheduler.shared.register(forTaskWithIdentifier:...) in native
+  AppDelegate/Swift code) for periodic background HealthKit re-sync
+  without the app being open. No such native registration exists here --
+  every HealthService fetch in this app happens on-demand when a screen
+  opens, not on a background schedule. Leave this key out until you
+  actually build that native registration; adding the key alone does
+  nothing without the matching Swift-side BGTaskScheduler code.
+
+  Example shape for when you do build it:
+-->
+<!--
+<key>BGTaskSchedulerPermittedIdentifiers</key>
+<array>
+    <string>com.kittysleep.app.healthRefresh</string>
+</array>
+-->
+
+<!--
+  HONEST CAVEAT ON OVERNIGHT RELIABILITY:
+  Even with the "audio" background mode declared, iOS will still
+  suspend/kill an app whose audio session isn't correctly configured and
+  actively engaged (category .playAndRecord or .record, active, and not
+  interrupted). `record`'s default configuration handles the common case,
+  but has NOT been verified in this codebase against a full multi-hour
+  overnight run on a real device with the screen locked. Test that
+  specifically before shipping -- don't take this Info.plist snippet as
+  proof it works end to end.
+-->

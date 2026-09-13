@@ -1,0 +1,46 @@
+name: kitty_sleep
+description: A sleep and fitness tracker with HealthKit/Health Connect integration.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.19.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # HealthKit (iOS) / Health Connect (Android) reads + writes.
+  # Verify this against pub.dev before locking it in — the HealthDataType
+  # enum has been renamed/extended across majors before (that's the
+  # source of the VO2_MAX naming issue fixed earlier in this build).
+  health: ^10.2.0
+
+  # Sleep Analysis hypnogram is hand-painted (CustomPainter), but the
+  # Stress Monitor line chart and Journal Impact bar chart both use this.
+  fl_chart: ^0.68.0
+
+  # Local persistence: manual sleep sessions, HRV/RHR baseline history,
+  # journal entries, menstrual cycle setup, user profile, sound event logs.
+  shared_preferences: ^2.2.3
+
+  # On-device audio amplitude capture for SoundDetectionService.
+  record: ^5.1.2
+
+  # Keeps the app process (and therefore SoundDetectionService's main-
+  # isolate audio capture) alive overnight via an Android foreground
+  # service. See lib/services/foreground_service_controller.dart for the
+  # architecture note on why capture itself doesn't move into this
+  # plugin's background isolate.
+  flutter_foreground_task: ^8.10.0
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
