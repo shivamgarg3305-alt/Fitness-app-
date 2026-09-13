@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/app_colors.dart';
-import 'navigation/app_shell.dart';
+import 'app_shell.dart';
 import 'services/foreground_service_controller.dart';
 
 void main() {

@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace "com.example.fitness_app"
-    compileSdkVersion 34
+    compileSdkVersion 36
     ndkVersion flutter.ndkVersion
 
     compileOptions {
