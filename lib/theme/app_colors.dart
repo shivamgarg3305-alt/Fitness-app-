@@ -31,13 +31,22 @@ class AppColors {
   static const Color textDim = Color(0xFF6B7280);
 
   // Gradients
-  static const List<Color> cardGradient = [
+  static const LinearGradient cardGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [
     Color(0xFF2E2557),
     Color(0xFF1B1440),
-  ];
+  ],
+);
 
-  static const List<Color> sessionButtonGradient = [
-    Color(0xFF00BCD4),
-    Color(0xFF18FFFF),
-  ];
-}
+
+static const LinearGradient sessionButtonGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [
+    Color(0xFF00D9FF),
+    Color(0xFF007AFF),
+  ],
+);
+
