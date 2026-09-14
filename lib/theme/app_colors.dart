@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-<<<<<<< HEAD
+
   static const Color navyDeep = Color(0xFF0B132B);
 
   static const Color cyan = Color(0xFF00D9FF);
@@ -30,7 +30,7 @@ class AppColors {
       Color(0xFF007AFF),
     ],
   );
-=======
+
   // Base surfaces
   static const Color pureBlack = Color(0xFF000000);
   static const Color navyBase = Color(0xFF0B132B);
@@ -61,5 +61,5 @@ class AppColors {
     Color(0xFF00BCD4),
     Color(0xFF18FFFF),
   ];
->>>>>>> f958f80 (Add all missing AppColors members)
+
 }
