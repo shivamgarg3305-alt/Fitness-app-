@@ -6,7 +6,15 @@ class AppColors {
   static const Color pureBlack = Color(0xFF000000);
   static const Color navyBase = Color(0xFF0B132B);
   static const Color navyDeep = Color(0xFF060A1A);
-  static const Color dashboardBackground = Color(0xFF0D1526);
+  static const LinearGradient dashboardBackground = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [
+    Color(0xFF101C3A),
+    Color(0xFF0B132B),
+  ],
+);
+
 
   // Cards
   static const Color purpleCard = Color(0xFF2E2557);
